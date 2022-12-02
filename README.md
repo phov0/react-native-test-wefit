@@ -9,7 +9,7 @@ ou
 npm install
 ```
 
-Após instalar todas as dependências, execute o seguinte comando no terminal para instalar os pods:
+Caso esteja no **macOS**, após instalar todas as dependências, execute o seguinte comando no terminal para instalar os pods:
 
 ```bash
 cd ios && pod install && cd ..
