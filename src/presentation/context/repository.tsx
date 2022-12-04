@@ -1,27 +1,22 @@
-
-import React, { createContext, useState } from "react";
+import React, {createContext, useEffect, useState} from "react";
 import UserSelectionModal from "../components/UserSelectionModal";
+import RepositoryService from "../../infrastructure/service/RepositoryService";
+import {Repository} from "../../infrastructure/model/Repository";
+import axios from "axios";
+import repositoryService from "../../infrastructure/service/RepositoryService";
+import {Alert} from "react-native";
 
 type Children = { children: JSX.Element };
-
-type Repository = {
-  id: number;
-  name: string;
-  owner: { name: string; avatar: string };
-  description: string;
-  url: string;
-  language: string;
-  stars: number;
-  favorite: boolean;
-};
 
 export type RepositoryContextData = {
   repositories: Repository[];
   favorites: Repository[];
-  getUserRepositories: (user: string) => Promise<void>;
+  getUserRepositories: (user:string) => Promise<void>;
   toggleUserSelectionModal: () => void;
-  addFavoriteRepository: (repository: Repository) => void;
-  removeFavoriteRepository: (repository: Repository) => void;
+  getFavoriteRepositories: () => Promise<void>;
+  addFavoriteRepository: (repository: Repository) => Promise<boolean>;
+  removeFavoriteRepository: (id: string) => Promise<boolean>;
+  isLoading:boolean;
 };
 
 export const RepositoryContext = createContext<RepositoryContextData>(
@@ -30,23 +25,93 @@ export const RepositoryContext = createContext<RepositoryContextData>(
 
 export const RepositoryProvider = ({ children }: Children) => {
   const [showModal, setShowModal] = useState(false);
-  const [favorites, setFavorites] = useState<Repository[]>([]);
-  const [repositories, setRepositories] = useState<Repository[]>([]);
+  const [favorites, setFavorites] = useState<Repository[]>(new Array());
+  const [repositories, setRepositories] = useState<Repository[]>(new Array());
   const [repositoryOwner, setRepositoryOwner] = useState("appswefit");
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(()=>{
+    getFavoriteRepositories();
+    getUserRepositories(repositoryOwner);
+  },[])
+
+  useEffect(()=>{
+    if(favorites.length>0){
+      getUserRepositories(repositoryOwner);
+    }
+  },[favorites])
+
+  const addFavoriteRepository = async (repository: Repository) => {
+    try{
+      setIsLoading(true);
+      await repositoryService.create(repository);
+      getFavoriteRepositories();
+      return true
+    }
+    catch (err){
+      return false;
+    }
+  };
+
+  const removeFavoriteRepository = async (id: string) => {
+    try{
+      setIsLoading(true);
+      await repositoryService.remove(id);
+      await getFavoriteRepositories();
+      return true
+    }
+    catch (err){
+      return false;
+    }
+  };
 
   const toggleUserSelectionModal = () => setShowModal((value) => !value);
 
-  const addFavoriteRepository = async (repository: Repository) => {
-    // TODO
+  const getUserRepositories = async (repositoryOwner:string) => {
+    setIsLoading(true);
+    axios.get(`https://api.github.com/users/${repositoryOwner}/repos`).then((response)=>{
+      if(!response.data){
+        return
+      }
+      const newRepositories = response.data.map((repository:any)=>{
+        return {
+          id: repository.id,
+          name: repository.full_name,
+          ownername: repository.owner.login,
+          owneravatar: repository.owner.avatar_url,
+          description: repository.description,
+          url: repository.html_url,
+          language: repository.language,
+          stars: repository.stargazers_count,
+          favorite: 0,
+        }
+      })
+      filterRepositories(newRepositories);
+      setRepositoryOwner(repositoryOwner);
+      setIsLoading(false);
+    })
+      .catch((err)=>{
+        Alert.alert("Erro!", "Usuário não encontrado");
+        setIsLoading(false);
+      })
   };
 
-  const removeFavoriteRepository = async (repository: Repository) => {
-    // TODO
-  };
+  const getFavoriteRepositories = async () =>{
+    await RepositoryService.all().then((resp) =>{
+      setFavorites(resp);
+    })
 
-  const getUserRepositories = async (user: string) => {
-    // TODO
-  };
+    setIsLoading(false);
+  }
+
+  const filterRepositories = (repositoriesToFilter: Repository[]) =>{
+    const filteredRepositories = repositoriesToFilter.filter((repository:Repository)=> {
+      const isFavorite = favorites.find(item => item.id == repository.id)
+      if(isFavorite) return false;
+      return true;
+    })
+    setRepositories(filteredRepositories)
+  }
 
   return (
     <RepositoryContext.Provider
@@ -55,12 +120,14 @@ export const RepositoryProvider = ({ children }: Children) => {
         favorites,
         getUserRepositories,
         toggleUserSelectionModal,
+        getFavoriteRepositories,
         addFavoriteRepository,
-        removeFavoriteRepository
+        removeFavoriteRepository,
+        isLoading,
       }}
     >
       {children}
-      <UserSelectionModal visible={showModal} onClose={() => setShowModal(false)} />
+      <UserSelectionModal repositoryOwner={repositoryOwner} getUserRepositories={getUserRepositories} visible={showModal} onClose={() => setShowModal(false)} />
     </RepositoryContext.Provider>
   );
 };

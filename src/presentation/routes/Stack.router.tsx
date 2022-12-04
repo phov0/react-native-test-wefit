@@ -4,6 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import { Splash } from "../flows/splash";
 import Details from "../flows/repositories/details";
+import theme from "../styles/theme";
 
 export type StackRootParamList = {
   Splash: undefined;
@@ -29,6 +30,17 @@ export default function StackRouter() {
       <Stack.Screen
         name="Details"
         component={Details}
+        options={{
+          title: 'Detalhes',
+          headerStyle: {
+            backgroundColor: theme.colors.BLACK,
+          },
+          headerTintColor: theme.colors.WHITE,
+          headerTitleStyle: {
+            fontFamily: theme.fonts.MEDIUM,
+            fontSize: 20
+          },
+        }}
       />
     </Stack.Navigator>
   );
