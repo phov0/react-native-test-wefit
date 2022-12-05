@@ -7,6 +7,7 @@ import {
   Container, InputArea, ButtonCancel, ButtonSave, Title,ButtonCancelLabel, ButtonSaveLabel,FloatingLabel
 } from "./styles";
 import {TextInput} from "react-native";
+import theme from "../../styles/theme";
 
 type Props = {
   repositoryOwner:string;
@@ -63,6 +64,7 @@ const UserSelectionModal = ({ repositoryOwner, visible, onClose, getUserReposito
       <InputArea>
         <FloatingLabel isFocused={isFocused}>Nome do usuário</FloatingLabel>
         <TextInput
+          selectionColor={theme.colors.BLUE}
           value={username}
           onChangeText={textChangeHandler}
           onFocus={focusHandler}

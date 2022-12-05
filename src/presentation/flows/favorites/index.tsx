@@ -1,35 +1,27 @@
-import React from "react";
-import { Container, LoadingContainer } from "./styles";
+import React, {useCallback} from "react";
+import { Container } from "./styles";
 import {useRepository} from "../../hooks/useRepository";
-import {ActivityIndicator, FlatList, SafeAreaView} from "react-native";
+import {FlatList, ListRenderItemInfo, SafeAreaView} from "react-native";
 import RepositoryView from "../../components/RepositoryView";
-import theme from "../../styles/theme";
 
 const Favorites = () => {
-  const { favorites, isLoading } = useRepository();
+  const { favorites } = useRepository();
 
-  if(isLoading){
-    return (
-      <LoadingContainer>
-        <ActivityIndicator
-          color={theme.colors.BLUE}
-        />
-      </LoadingContainer>
-    )
-  }
+  const renderItem = useCallback(({ item, index }:ListRenderItemInfo<Repository>)=>(
+    <RepositoryView
+      item={item}
+      first={index == 0 ? true:false}
+      last={index == favorites.length -1 ? true:false}
+    />
+  ),[favorites]);
+
   return (
     <Container>
       <SafeAreaView>
         <FlatList
+          keyExtractor={(item:Repository, index)=> `${item.id}`}
           data={favorites}
-          renderItem={({ item, index })=>{
-            return <RepositoryView
-              item={item}
-              first={index == 0 ? true:false}
-              last={index == favorites.length -1 ? true:false}
-            />
-          }
-          }
+          renderItem={renderItem}
         />
       </SafeAreaView>
     </Container>

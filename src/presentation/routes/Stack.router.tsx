@@ -33,7 +33,7 @@ export default function StackRouter() {
         options={{
           title: 'Detalhes',
           headerStyle: {
-            backgroundColor: theme.colors.BLACK,
+            backgroundColor: theme.colors.BLACK_1,
           },
           headerTintColor: theme.colors.WHITE,
           headerTitleStyle: {

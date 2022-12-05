@@ -7,7 +7,7 @@ import {
   RepositoryImage,
   Separator,
   Content,
-  Text,
+  Description,
   Footer,
   FavoriteButton,
   ButtonLabel,
@@ -18,7 +18,6 @@ import {
   LanguageLabel
 } from "./styles";
 import {Entypo} from "@expo/vector-icons";
-import {Repository} from "../../../infrastructure/model/Repository";
 import {useNavigation} from "@react-navigation/native";
 import {NativeStackNavigationProp} from "react-native-screens/native-stack";
 import theme from "../../styles/theme";
@@ -51,21 +50,21 @@ const RepositoryView = ({ item, first, last }: Props) => {
       </Header>
       <Separator/>
       <Content>
-        <Text>{item.description}</Text>
+        <Description>{item.description}</Description>
       </Content>
       <Footer>
         {item.favorite == 0 ?
           <FavoriteButton onPress={favoritePressHandler}>
-            <Entypo name={"star"} size={16} color={theme.colors.YELLOW}/>
+            <Entypo name={"star"} size={16} color={theme.colors.YELLOW_1}/>
             <ButtonLabel>Favoritar</ButtonLabel>
           </FavoriteButton>:null
         }
         <FavoriteCount>
-          <Entypo name={"star"} size={16} color={theme.colors.YELLOW}/>
+          <Entypo name={"star"} size={16} color={theme.colors.YELLOW_1}/>
           <CountLabel>{Math.floor(item.stars)}</CountLabel>
         </FavoriteCount>
         <Language>
-          <LanguageElipsis></LanguageElipsis>
+          <LanguageElipsis/>
           <LanguageLabel>{item.language || "Undefined"}</LanguageLabel>
         </Language>
       </Footer>

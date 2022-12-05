@@ -6,7 +6,8 @@ import { ThemeProvider } from "styled-components";
 
 import { 
   useFonts,
-  Roboto_500Medium
+  Roboto_500Medium,
+  Roboto_400Regular
 } from '@expo-google-fonts/roboto';
 
 import { 
@@ -17,9 +18,10 @@ import {
 
 export default function App() {
   const [fontsLoaded] = useFonts({
+    Roboto_400Regular,
     Roboto_500Medium,
     Inter_400Regular,
-    Inter_700Bold
+    Inter_700Bold,
   });
 
   if (!fontsLoaded) return <></>;

@@ -13,11 +13,11 @@ export const Container = styled.View`
 export const Text = styled.Text`
   font-family: ${({ theme }) => theme.fonts.BOLD};
   font-size: 20px;
-  color: ${({ theme }) => theme.colors.BLACK};
+  color: ${({ theme }) => theme.colors.BLACK_1};
 `;
 
 export const Button = styled.TouchableOpacity.attrs({
-  activeOpacity: 1,
+  activeOpacity: 0.8,
 })``;
 
 export const SettingsIcon = styled(MaterialIcons).attrs(({ theme }) => ({

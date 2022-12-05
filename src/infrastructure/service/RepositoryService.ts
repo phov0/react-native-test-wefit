@@ -1,5 +1,4 @@
 import db from "./Sqlite";
-import {Repository} from "../model/Repository";
 /**
  * INICIALIZAÇÃO DA TABELA
  * - Executa sempre, mas só cria a tabela caso não exista (primeira execução)
@@ -117,7 +116,7 @@ const all = () => {
  *  - O resultado da Promise a quantidade de registros removidos (zero indica que nada foi removido);
  *  - Pode retornar erro (reject) caso o ID não exista ou então caso ocorra erro no SQL.
  */
-const remove = (id:string) => {
+const remove = (id:number) => {
   return new Promise((resolve, reject) => {
     db.transaction((tx) => {
       //comando SQL modificável

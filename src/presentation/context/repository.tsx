@@ -1,7 +1,6 @@
 import React, {createContext, useEffect, useState} from "react";
 import UserSelectionModal from "../components/UserSelectionModal";
 import RepositoryService from "../../infrastructure/service/RepositoryService";
-import {Repository} from "../../infrastructure/model/Repository";
 import axios from "axios";
 import repositoryService from "../../infrastructure/service/RepositoryService";
 import {Alert} from "react-native";
@@ -14,8 +13,8 @@ export type RepositoryContextData = {
   getUserRepositories: (user:string) => Promise<void>;
   toggleUserSelectionModal: () => void;
   getFavoriteRepositories: () => Promise<void>;
-  addFavoriteRepository: (repository: Repository) => Promise<boolean>;
-  removeFavoriteRepository: (id: string) => Promise<boolean>;
+  addFavoriteRepository: (repository: Repository) => Promise<void>;
+  removeFavoriteRepository: (id: number) => Promise<void>;
   isLoading:boolean;
 };
 
@@ -42,27 +41,15 @@ export const RepositoryProvider = ({ children }: Children) => {
   },[favorites])
 
   const addFavoriteRepository = async (repository: Repository) => {
-    try{
       setIsLoading(true);
       await repositoryService.create(repository);
-      getFavoriteRepositories();
-      return true
-    }
-    catch (err){
-      return false;
-    }
+      await getFavoriteRepositories();
   };
 
-  const removeFavoriteRepository = async (id: string) => {
-    try{
+  const removeFavoriteRepository = async (id: number) => {
       setIsLoading(true);
       await repositoryService.remove(id);
       await getFavoriteRepositories();
-      return true
-    }
-    catch (err){
-      return false;
-    }
   };
 
   const toggleUserSelectionModal = () => setShowModal((value) => !value);

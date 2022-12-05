@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
 import { Container, Logo } from "./styles";
 import { useNavigation } from "@react-navigation/native";
+import {NativeStackNavigationProp} from "react-native-screens/native-stack";
 
 export const Splash = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<any>>();
 
   useEffect(() => {
     setTimeout(() => {

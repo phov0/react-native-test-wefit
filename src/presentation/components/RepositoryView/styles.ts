@@ -13,7 +13,7 @@ type Props = {
   last:boolean;
 }
 export const Container = styled.TouchableOpacity.attrs({
-  activeOpacity: 0.9,
+  activeOpacity: 0.8,
 })<Props>`
   padding: 12px 16px 12px 16px;
   marginHorizontal: 16px;
@@ -25,24 +25,22 @@ export const Container = styled.TouchableOpacity.attrs({
   elevation: 4;
   margin-top: ${({first})=> first? '16px':"8px"};
   margin-bottom: ${({last})=> last? '16px':"8px"};
-  
 `;
 
 export const Header = styled(FlexViewRow)`
-  
 `;
 
 export const Title = styled.Text`
-  font-family: ${({ theme }) => theme.fonts.REGULAR};
+  font-family: ${({ theme }) => theme.fonts.REGULAR_1};
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
   line-height: 15px;
-  color: #070707;
+  color: ${({ theme }) => theme.colors.BLACK_2};
 `;
 
 export const TitleSpan = styled(Title)`
-  font-weight: bold;
+  font-family: ${({ theme }) => theme.fonts.BOLD};
 `;
 
 export const RepositoryImage = styled.Image`
@@ -52,16 +50,16 @@ export const RepositoryImage = styled.Image`
 `
 
 export const Separator = styled.View`
-  border: 0.5px #DADADA solid;
+  border: 0.5px solid;
+  border-color: ${({ theme }) => theme.colors.GRAY_4} ;
   margin: 16px 0px;
 `
 
 export const Content = styled.View`
-  
 `;
 
-export const Text = styled.Text`
-  font-family: ${({ theme }) => theme.fonts.REGULAR};
+export const Description = styled.Text`
+  font-family: ${({ theme }) => theme.fonts.REGULAR_1};
   font-size: 12px;
   color: ${({ theme }) => theme.colors.GRAY_2};
 `;
@@ -71,13 +69,13 @@ export const Footer = styled(FlexViewRow)`
 `;
 
 export const FavoriteButton = styled.TouchableOpacity.attrs({
-  activeOpacity: 1,
+  activeOpacity: 0.8,
 })`
   padding-top: 8px;
   padding-right: 10px;
   padding-bottom: 8px;
   padding-left: 10px;
-  background-color: #FAF3DC;
+  background-color: ${({ theme }) => theme.colors.YELLOW_2};
   display:flex;
   flex-direction: row;
   justify-content: space-between;
@@ -90,36 +88,27 @@ export const FavoriteCount = styled(FlexViewRow)`
   align-items: center;
 `;
 
-export const ButtonLabel = styled(Text)`
+export const ButtonLabel = styled(Description)`
+  font-family: ${({ theme }) => theme.fonts.BOLD};
   margin-left: 12px;
-  color: #FFD02C;
+  color: ${({ theme }) => theme.colors.YELLOW_1};
 `;
 
-export const CountLabel = styled(Text)`
+export const CountLabel = styled(Description)`
   margin-left: 8px;
 `;
 
 export const Language =  styled(FlexViewRow)`
-  
 `;
 
 export const LanguageElipsis = styled.View`
-  height: 6px;
-  width: 6px;
+  height: 8px;
+  width: 8px;
   border-radius: 3px;
-  background-color: red;
+  background-color: ${({ theme }) => theme.colors.RED};
 `;
 
-export const LanguageLabel = styled(Text)`
+export const LanguageLabel = styled(Description)`
   margin-left: 6px;
 `;
 
-export const SettingsIcon = styled(MaterialIcons).attrs(({ theme }) => ({
-  name: "settings",
-  size: 24,
-}))``;
-
-export const Ellipsis = styled(MaterialIcons).attrs(({ theme }) => ({
-  name: "circle",
-  size: 24,
-}))``;

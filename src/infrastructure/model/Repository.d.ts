@@ -1,5 +1,5 @@
 //MODEL
-export type Repository = {
+type Repository = {
   id: number;
   name: string;
   ownername: string;

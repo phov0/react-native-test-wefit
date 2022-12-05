@@ -19,9 +19,8 @@ export default function BottomRouter() {
       screenOptions={{
         header: () => <Header title="WeFit" onPress={toggleUserSelectionModal} />,
         tabBarLabelStyle: {
-          fontFamily: theme.fonts.MEDIUM,
-          fontSize: 14,
-          fontWeight: "400"
+          fontFamily: theme.fonts.REGULAR_2,
+          fontSize: 14
         },
         tabBarStyle:{
           height:70,
@@ -29,8 +28,8 @@ export default function BottomRouter() {
           paddingHorizontal: 12,
           paddingBottom:8
         },
-        tabBarActiveTintColor: "#1976D2",
-        tabBarInactiveTintColor: "rgba(0, 0, 0, 0.6);"
+        tabBarActiveTintColor: theme.colors.BLUE,
+        tabBarInactiveTintColor: theme.colors.BLACK_4
       }}
     >
       <Tab.Screen
